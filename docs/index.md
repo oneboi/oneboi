@@ -26,6 +26,6 @@ features:
   - title: 音乐
     details: 帮你找到你喜欢的音乐
   - title: 视频
-    details: 找到你先看的电影
+    details: 找到你想要的电影
 ---
 
