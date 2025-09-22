@@ -19,11 +19,11 @@ hero:
 
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 图书
+    details: 关注公众号，可以帮你找到你需要的电子书
+  - title: 软件
+    details: 帮你寻找解决你问题的软件
+  - title: 视频
+    details: 找到你先看的电影
 ---
 
