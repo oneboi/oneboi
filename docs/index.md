@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "oneboi"
+  name: "序章"
   text: "回忆是一条没有归途的路，以往的一切春天都无法复原！"
   tagline: "马尔克斯《百年孤独》"
   actions:
