@@ -12,16 +12,19 @@ hero:
       link: /markdown-examples
     - theme: alt
       text: 软件
-      link: /stor/soft/soft
+      link: /store/soft/soft
     - theme: alt
       text: 文章
-      link: /article/articlelist
+      link: /article/articleindex
     - theme: alt
       text: 音乐
       link: /store/music/music
     - theme: alt
       text: 图书列表
       link: /booklist/bookindex
+    - theme: alt
+      text: 网站
+      link: /site/siteindex
 
 
 features:
