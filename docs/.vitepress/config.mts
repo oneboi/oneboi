@@ -16,11 +16,11 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: '列表',
+        text: '导航',
         items: [
-          { text: 'article', link: '/article/articleindex' },
-          { text: 'book', link: '/booklist/bookindex' },
-          { text: 'soft', link: '/store/soft/soft' }
+          { text: '文章', link: '/article/articleindex' },
+          { text: '书籍收集', link: '/booklist/bookindex' },
+          { text: '软件收集', link: '/store/soft/soft' }
         ]
       },
       
