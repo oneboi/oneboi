@@ -9,7 +9,8 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: '案例', link: '/markdown-examples' }
+      { text: '案例', link: '/markdown-examples' },
+      { text: '书籍', link: '/booklist/bookindex' }
     ],
 
     sidebar: [
