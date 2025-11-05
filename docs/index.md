@@ -10,10 +10,10 @@ hero:
     - theme: brand
       text: 图书
       link: /markdown-examples
-    - theme: brand
+    - theme: alt
       text: 软件
       link: /stor/soft/soft
-    - theme: brand
+    - theme: alt
       text: 文章
       link: /article/articlelist
     - theme: alt
