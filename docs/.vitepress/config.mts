@@ -19,7 +19,7 @@ export default defineConfig({
         text: '列表',
         items: [
           { text: 'article', link: '/article/articleindex' },
-          { text: 'book', link: '/booklist/bookindex' }
+          { text: 'book', link: '/booklist/bookindex' },
           { text: 'soft', link: '/store/soft/soft' }
         ]
       },
