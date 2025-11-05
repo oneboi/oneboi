@@ -18,7 +18,7 @@ export default defineConfig({
       {
         text: '导航',
         items: [
-          { text: '文章', link: '/article/articleindex' },
+          { text: '文档', link: '/article/articleindex' },
           { text: '书籍收集', link: '/booklist/bookindex' },
           { text: '软件收集', link: '/store/soft/soft' }
         ]
