@@ -10,7 +10,8 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '案例', link: '/markdown-examples' },
-      { text: '书籍', link: '/booklist/bookindex' }
+      { text: '书籍', link: '/booklist/bookindex' },
+      { text: 'site', link: '/site/siteindex' }
     ],
 
     sidebar: [
