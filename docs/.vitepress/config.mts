@@ -11,7 +11,9 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '案例', link: '/markdown-examples' },
       { text: '书籍', link: '/booklist/bookindex' },
-      { text: 'site', link: '/site/siteindex' }
+      { text: 'site', link: '/site/siteindex' },
+      { text: '工具网站', link: '/tool/toolindex' },
+      { text: '英语学习', link: '/english/englishindex' }
     ],
 
     sidebar: [
