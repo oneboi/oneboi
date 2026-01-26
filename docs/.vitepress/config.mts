@@ -13,22 +13,34 @@ export default defineConfig({
       { text: '书籍', link: '/booklist/bookindex' },
       { text: 'site', link: '/site/siteindex' },
       { text: '工具网站', link: '/tool/toolindex' },
-      { text: '英语学习', link: '/english/englishindex' }
+      { text: '英语学习', link: '/english/englishindex' },
+      { text: 'java', link: '/java/javaindex' },
+      { text: 'python', link: '/python/pythonindex' },
+      { text: 'vue', link: '/vue/vueindex' },
+      { text: 'react', link: '/react/reactindex' },
+      { text: 'springboot', link: '/springboot/springbootindex' },
+      { text: 'design', link: '/design/designindex' },
+      { text: 'media', link: '/media/mediaindex' },
+      { text: 'words', link: '/words/wordsindex' }
     ],
-
     sidebar: [
       {
         text: '导航',
         items: [
           { text: '文档', link: '/article/articleindex' },
           { text: '书籍收集', link: '/booklist/bookindex' },
-          { text: '软件收集', link: '/store/soft/soft' }
+          { text: '软件收集', link: '/store/soft/soft' },
+          { text: 'media', link: '/media/mediaindex' },
+          { text: 'words', link: '/words/wordsindex' },
+          { text: 'vue', link: '/vue/vueindex' },
+          { text: 'react', link: '/react/reactindex' }
+
         ]
       },
       
     ],
      footer: {
-      message: '<a href="https://beian.miit.gov.cn/#/Integrated/recordQuery">滇ICP备17010034号-1</a>.',
+      message: '<a href="https://beian.miit.gov.cn/#/Integrated/recordQuery"></a>.',
       copyright: 'Copyright © 2025-present'
     },
     socialLinks: [
