@@ -21,7 +21,9 @@ export default defineConfig({
       { text: 'springboot', link: '/springboot/springbootindex' },
       { text: 'design', link: '/design/designindex' },
       { text: 'media', link: '/media/mediaindex' },
-      { text: 'words', link: '/words/wordsindex' }
+      { text: 'words', link: '/words/wordsindex' },
+      { text: 'UI', link: '/ui/uiindex' },
+
     ],
     sidebar: [
       {
