@@ -1,0 +1,638 @@
+# Java IO
+
+##  一、初识
+
+在日常开发中，我们经常需要处理**文件读写**、**网络传输**等场景，这些操作都离不开IO。IO全称是`Input/Output`，即输入和输出，它**负责应用程序和外部设备之间的数据传输**。想象一下，当你从文件读取配置信息，或者将用户数据保存到数据库，背后都是IO在发挥作用。
+
+Java采用"流"的概念来处理IO操作。流就像一条数据管道，数据在其中有序地流动。理解流的特性对掌握Java IO至关重要：
+
+- **先进先出**：最先写入输出流的数据最先被输入流读取到，就像排队一样
+- **顺序存取**：数据按照写入顺序读取，不能随机访问中间的数据（`RandomAccessFile`是个例外）
+- **单向性**：每个流要么负责读，要么负责写，不能同时进行。如果需要双向传输，得准备两个流
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#二、基本划分)二、基本划分
+
+按照数据传输的形式，Java IO主要分为两大类：字节流和字符流。**理解它们的区别，能帮你在合适的场景选择合适的工具**。
+
+**字节流**是计算机的原生语言。计算机用二进制（bit）存储一切，8个bit组成1个字节（byte）。**处理图片、视频、音频等二进制文件时，字节流是首选**。
+
+<u>**字符流**更贴近人类的使用习惯</u>。比如"我喜欢看电影"这样的文本，用字符流处理更方便。**不过底层存储时，字符还是要转成字节，这就涉及到字符编码了**。`UTF-8`是目前最流行的编码方式，它几乎涵盖了全球所有语言文字，建议你在处理文本时优先考虑它。
+
+Java为这两类流分别设计了基础抽象类：
+
+**字节流：**
+
+- `InputStream` - 字节输入流的抽象基类
+- `OutputStream` - 字节输出流的抽象基类
+
+**字符流：**
+
+- `Reader` - 字符输入流的抽象基类
+- `Writer` - 字符输出流的抽象基类
+
+这四个抽象类构成了Java IO体系的基石。记住一个简单的规律：`InputStream`和`Reader`都有`read()`方法，负责读取数据；`OutputStream`和`Writer`都有`write()`方法，负责写出数据。所有具体的IO类都继承自它们。
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#三、操作对象划分)三、操作对象划分
+
+根据**操作对象的不同，Java IO提供了丰富的实现类。**文件操作是最常见的，但实际开发中，你还会遇到**内存数组**、**线程间通信**、**对象序列化**等多种场景。让我们逐一了解这些实现类的特点和用法。
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_1、文件流)1、文件流
+
+文件流是最基础也是最常用的IO操作。下面通过实例来看看如何用字节流和字符流读写文件： **字节流读取文件：**
+
+```java
+// 使用try-with-resources自动管理资源
+try (FileInputStream fis = new FileInputStream("fis.txt")) {
+    int b;
+    // 逐字节读取，-1表示文件结束
+    while ((b = fis.read()) != -1) {
+        System.out.println((char) b);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**字符流读取文件：**
+
+```java
+// 字符流更适合处理文本文件
+try (FileReader fileReader = new FileReader("read.txt")) {
+    int c;
+    // 逐字符读取，自动处理字符编码
+    while ((c = fileReader.read()) != -1) {
+        System.out.println((char) c);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+小提示：上面的例子使用了系统默认编码，如果需要指定编码，可以结合`InputStreamReader`使用。
+
+**文件写入操作：**
+
+```java
+// 字节流写入
+try (FileOutputStream fos = new FileOutputStream("fs.txt")) {
+    String content = "爱看电影";
+    // 将字符串转为字节数组写入
+    fos.write(content.getBytes(StandardCharsets.UTF_8));
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// 字符流写入
+try (FileWriter fileWriter = new FileWriter("fw.txt")) {
+    String content = "爱看电影";
+    // 直接写入字符串，更加方便
+    fileWriter.write(content);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_2、数组流)2、数组流
+
+数组流（也叫内存流）在内存中操作数据，不涉及磁盘IO，速度很快。常用于临时数据处理或测试场景：
+
+```java
+// 从内存中读取数据
+String data = "爱看电影";
+try (InputStream is = new BufferedInputStream(
+        new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)))) {
+    byte[] buffer = new byte[1024];
+    int len;
+    while ((len = is.read(buffer)) != -1) {
+        System.out.println(new String(buffer, 0, len, StandardCharsets.UTF_8));
+    }
+}
+
+// 向内存中写入数据
+try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+    String info = "爱看电影";
+    bos.write(info.getBytes(StandardCharsets.UTF_8));
+    // 获取写入的字节数组
+    byte[] result = bos.toByteArray();
+    System.out.println(new String(result, StandardCharsets.UTF_8));
+}
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_3、管道流)3、管道流
+
+管道流是Java提供的线程间通信机制。注意，它只能用于同一JVM内的线程通信，不能跨进程使用：
+
+```java
+// 创建管道流
+PipedOutputStream pipedOutputStream = new PipedOutputStream();
+PipedInputStream pipedInputStream = new PipedInputStream(pipedOutputStream);
+
+// 写入线程
+Thread writer = new Thread(() -> {
+    try (PipedOutputStream out = pipedOutputStream) {
+        String message = "爱看电影";
+        out.write(message.getBytes(StandardCharsets.UTF_8));
+        System.out.println("写入完成: " + message);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+});
+
+// 读取线程
+Thread reader = new Thread(() -> {
+    try (PipedInputStream in = pipedInputStream) {
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = in.read(buffer)) != -1) {
+            String received = new String(buffer, 0, len, StandardCharsets.UTF_8);
+            System.out.println("接收到: " + received);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+});
+
+// 启动线程
+writer.start();
+reader.start();
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_4、基本类型流)4、基本类型流
+
+`DataInputStream`和`DataOutputStream`专门用于读写Java基本数据类型，它们会保持数据的类型信息：
+
+```java
+// 写入基本类型数据
+try (DataOutputStream dos = new DataOutputStream(
+        new FileOutputStream("data.txt"))) {
+    dos.writeByte(10);      // 写入1个字节
+    dos.writeShort(100);    // 写入2个字节
+    dos.writeInt(1000);     // 写入4个字节
+    dos.writeLong(10000L);  // 写入8个字节
+    dos.writeFloat(12.34F); 
+    dos.writeDouble(12.56);
+    dos.writeBoolean(true);
+    dos.writeChar('A');
+    dos.writeUTF("爱看电影"); // 写入UTF-8编码的字符串
+}
+
+// 读取基本类型数据（注意：必须按写入顺序读取）
+try (DataInputStream dis = new DataInputStream(
+        new FileInputStream("data.txt"))) {
+    byte b = dis.readByte();
+    short s = dis.readShort();
+    int i = dis.readInt();
+    long l = dis.readLong();
+    float f = dis.readFloat();
+    double d = dis.readDouble();
+    boolean bool = dis.readBoolean();
+    char ch = dis.readChar();
+    String str = dis.readUTF();
+    
+    System.out.println("读取的字符串: " + str);
+}
+```
+
+重要提醒：读取顺序必须与写入顺序完全一致，否则会出现数据错乱。
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_5、缓冲流)5、缓冲流
+
+缓冲流是个性能优化利器。它在内存中维护一个缓冲区（默认8192字节），减少了对底层IO的调用次数，从而提升性能。
+
+想象一下，如果每读一个字节就访问一次硬盘，效率会很低。缓冲流的策略是：一次性读取一大块数据到缓冲区，后续的读取操作先从缓冲区获取，缓冲区空了再去硬盘读取下一块。
+
+```java
+// 使用缓冲流包装文件流
+try (BufferedInputStream bis = new BufferedInputStream(
+        new FileInputStream("large-file.txt"))) {
+    byte[] buffer = new byte[1024];
+    int bytesRead;
+    while ((bytesRead = bis.read(buffer)) != -1) {
+        // 处理读取的数据
+        System.out.write(buffer, 0, bytesRead);
+    }
+}
+
+// 缓冲字符流读取文本，按行处理更方便
+try (BufferedReader reader = new BufferedReader(
+        new FileReader("text.txt"))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+        System.out.println(line);
+    }
+}
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_6、打印流)6、打印流
+
+每天都在用的`System.out.println()`其实就是打印流。打印流专门用于格式化输出，提供了丰富的print方法。
+
+- `PrintStream`：字节打印流，`System.out`返回的就是`PrintStream`实例
+- `PrintWriter`：字符打印流，支持自动刷新功能
+
+```java
+// PrintWriter写入到字符串
+StringWriter buffer = new StringWriter();
+try (PrintWriter pw = new PrintWriter(buffer)) {
+    pw.println("爱看电影");
+    pw.printf("今天是%d年%d月%d日\n", 2024, 1, 1);
+}
+System.out.println(buffer.toString());
+
+// PrintWriter写入文件，带自动刷新
+try (PrintWriter pw = new PrintWriter(
+        new FileWriter("output.txt"), true)) { // true表示自动刷新
+    pw.println("自动刷新的内容");
+    // 不需要手动调用flush()
+}
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_7、序列化流)7、序列化流
+
+序列化是将Java对象转换为字节流的过程，常用于网络传输或持久化存储。使用序列化需要注意几点：
+
+1. 类必须实现`Serializable`接口
+2. 建议定义`serialVersionUID`，避免版本兼容问题
+3. `transient`修饰的字段不会被序列化
+
+```java
+// 定义可序列化的类
+class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String name;
+    String address;
+    transient int age; // 不会被序列化
+}
+
+// 序列化对象到文件
+Employee emp = new Employee();
+emp.name = "Jack";
+emp.address = "Beijing";
+emp.age = 30;
+
+try (ObjectOutputStream oos = new ObjectOutputStream(
+        new FileOutputStream("employee.dat"))) {
+    oos.writeObject(emp);
+    System.out.println("对象已序列化");
+}
+
+// 反序列化：从文件读取对象
+try (ObjectInputStream ois = new ObjectInputStream(
+        new FileInputStream("employee.dat"))) {
+    Employee restoredEmp = (Employee) ois.readObject();
+    System.out.println("姓名: " + restoredEmp.name);
+    System.out.println("年龄: " + restoredEmp.age); // 输出0，因为age是transient
+}
+```
+
+性能提示：Java原生序列化性能一般，生产环境建议使用`Protobuf`、`Kryo`或`Hessian`等高性能序列化框架。
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#四、字节与字符流的转换)四、字节与字符流的转换
+
+在实际开发中，经常需要在字节流和字符流之间转换。`InputStreamReader`和`OutputStreamWriter`就是专门做这个工作的桥梁。
+
+```java
+// 字节流转字符流，指定编码
+try (InputStreamReader isr = new InputStreamReader(
+        new FileInputStream("demo.txt"), StandardCharsets.UTF_8)) {
+    char[] buffer = new char[1024];
+    int len = isr.read(buffer);
+    System.out.println(new String(buffer, 0, len));
+}
+
+// 解决FileReader编码问题的正确方式
+try (BufferedReader reader = new BufferedReader(
+        new InputStreamReader(
+            new FileInputStream("chinese.txt"), 
+            StandardCharsets.UTF_8))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+        System.out.println(line);
+    }
+}
+
+// 字符流转字节流，指定编码写入
+try (OutputStreamWriter osw = new OutputStreamWriter(
+        new FileOutputStream("output.txt"), StandardCharsets.UTF_8)) {
+    osw.write("中文内容也能正确处理");
+}
+```
+
+实用技巧：遇到中文乱码问题时，首先检查是否正确指定了字符编码。
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#五、工具类库)五、工具类库
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_1、scanner)1、Scanner
+
+`Scanner`是个方便的工具类，可以从各种输入源解析基本类型和字符串：
+
+```java
+// 从控制台读取用户输入
+try (Scanner sc = new Scanner(System.in)) {
+    System.out.print("请输入一个数字: ");
+    int number = sc.nextInt();
+    System.out.println("你输入的是: " + number);
+}
+
+// 从文件读取数据
+try (Scanner sc = new Scanner(new File("numbers.txt"))) {
+    while (sc.hasNextLong()) {
+        long value = sc.nextLong();
+        System.out.println("读取到: " + value);
+    }
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+```
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_2、apache-common-io)2、Apache Common IO
+
+maven引入：
+
+```xml
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.11.0</version>
+</dependency>
+```
+
+IO相关的工具主要是IOUtils，有很多有用的方法。
+
+copy和copyLarge用于拷贝流，比如把网络文件保存到本地：
+
+```java
+InputStream is = new URL("https://example.com/image.jpg").openConnection().getInputStream();
+IOUtils.copy(is, new FileOutputStream("1.jpg"));
+```
+
+按照指定编码读取文件：
+
+```java
+IOUtils.readLines(is, StandardCharsets.UTF_8);
+```
+
+InputStream转换为byte[]或char[]:
+
+```java
+IOUtils.toByteArray(is);
+
+IOUtils.toCharArray(is, StandardCharsets.UTF_8);
+
+IOUtils.toString(is, StandardCharsets.UTF_8);
+```
+
+写入文件：
+
+```java
+IOUtils.write("爱看电影", new FileOutputStream("1.txt"), StandardCharsets.UTF_8);
+
+IOUtils.writeLines(list, new FileOutputStream("1.txt"), StandardCharsets.UTF_8);
+```
+
+关闭资源：
+
+```java
+IOUtils.closeQuietly(is);
+```
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#六、新io-nio)六、新IO（NIO）
+
+Java 1.4引入的NIO（New IO）是对传统IO的重要补充，它带来了更高效的IO操作方式。NIO的核心特点是面向缓冲区和非阻塞，这让它在处理大量连接时表现出色。
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_1、nio的核心组件)1、NIO的核心组件
+
+**1. Channel（通道）**
+不同于传统IO的单向流，Channel是双向的，既能读又能写。把它想象成一条高速公路，数据可以双向流动：
+
+- `FileChannel`：文件数据读写
+- `SocketChannel`：TCP网络数据读写
+- `ServerSocketChannel`：监听TCP连接
+- `DatagramChannel`：UDP数据读写
+
+**2. Buffer（缓冲区）**
+所有数据都要通过Buffer来传输。根据数据类型，Java提供了不同的Buffer实现：
+
+- `ByteBuffer`（最常用）
+- `CharBuffer`、`IntBuffer`、`LongBuffer`等
+- `MappedByteBuffer`（内存映射文件）
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_2、文件拷贝性能对比)2、文件拷贝性能对比
+
+让我们通过文件拷贝来对比传统IO和NIO的区别。NIO的优势在于零拷贝技术，数据直接在内核空间传输，避免了用户空间和内核空间之间的多次拷贝。
+
+**传统IO方式：**
+
+```java
+public static void copyFileByStream(File source, File dest) throws IOException {
+    try (InputStream is = new FileInputStream(source);
+         OutputStream os = new FileOutputStream(dest)) {
+        byte[] buffer = new byte[4096]; // 适当增大缓冲区
+        int length;
+        while ((length = is.read(buffer)) > 0) {
+            os.write(buffer, 0, length);
+        }
+    }
+}
+```
+
+**NIO零拷贝方式：**
+
+```java
+public static void copyFileByChannel(File source, File dest) throws IOException {
+    try (FileChannel sourceChannel = new FileInputStream(source).getChannel();
+         FileChannel targetChannel = new FileOutputStream(dest).getChannel()) {
+        // transferTo使用零拷贝，效率更高
+        long size = sourceChannel.size();
+        long transferred = 0;
+        while (transferred < size) {
+            transferred += sourceChannel.transferTo(
+                transferred, size - transferred, targetChannel);
+        }
+    }
+}
+```
+
+**性能差异：**
+
+- 小文件（<10MB）：两者差异不大
+- 大文件（>100MB）：NIO优势明显，可提升30-50%性能
+- 网络传输：NIO的非阻塞特性优势巨大
+
+### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_3、buffer的正确使用)3、Buffer的正确使用
+
+理解Buffer的核心属性和操作流程，是掌握NIO的关键。Buffer就像一个可以前后移动指针的数组：
+
+**核心属性：**
+
+- `capacity`：缓冲区总容量，创建后不能改变
+- `position`：下一个要读写的位置
+- `limit`：可以读写的边界
+
+**Buffer的生命周期：**
+
+```java
+// 1. 创建Buffer
+ByteBuffer buffer = ByteBuffer.allocate(1024);
+// 此时：position=0, limit=capacity=1024
+
+// 2. 写入数据
+buffer.put("Hello".getBytes());
+// 此时：position=5, limit=1024
+
+// 3. 切换到读模式
+buffer.flip();
+// 此时：position=0, limit=5
+
+// 4. 读取数据
+byte[] data = new byte[buffer.limit()];
+buffer.get(data);
+// 此时：position=5, limit=5
+
+// 5. 清空缓冲区，准备下次使用
+buffer.clear();
+// 此时：position=0, limit=1024
+```
+
+**完整的文件复制示例：**
+
+```java
+public static void fastCopy(String src, String dest) throws IOException {
+    try (FileChannel sourceChannel = new FileInputStream(src).getChannel();
+         FileChannel destChannel = new FileOutputStream(dest).getChannel()) {
+        
+        // 分配直接缓冲区，性能更好
+        ByteBuffer buffer = ByteBuffer.allocateDirect(4096);
+        
+        while (sourceChannel.read(buffer) != -1) {
+            // 切换到读模式
+            buffer.flip();
+            
+            // 确保完全写入
+            while (buffer.hasRemaining()) {
+                destChannel.write(buffer);
+            }
+            
+            // 清空缓冲区，准备下次读取
+            buffer.clear();
+        }
+    }
+}
+```
+
+#### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_3-1、buffer-直接缓冲区)3.1、Buffer（直接缓冲区）
+
+在高性能场景下，堆外内存是个重要的优化手段。理解它的原理和使用场景，能帮你写出更高效的代码。
+
+**堆内缓冲区 vs 堆外缓冲区：**
+
+```java
+// 堆内缓冲区：受GC管理
+ByteBuffer heapBuffer = ByteBuffer.allocate(1024);
+
+// 堆外缓冲区：不受GC直接管理
+ByteBuffer directBuffer = ByteBuffer.allocateDirect(1024);
+```
+
+**Direct Buffer的优势：**
+
+- 避免了JVM和操作系统之间的数据拷贝
+- 内存地址固定，内核可以直接访问
+- 减少GC压力，特别适合长生命周期的大数据缓冲
+
+**使用建议：**
+
+- 适合场景：大文件传输、网络IO、长时间使用的缓冲区
+- 不适合场景：小数据量、频繁创建销毁的临时缓冲区
+
+**注意事项：**
+
+```java
+// JVM参数配置
+// -XX:MaxDirectMemorySize=512M  设置最大堆外内存
+// -XX:+DisableExplicitGC 千万别用这个参数，会导致堆外内存无法回收
+
+// 最佳实践：复用Direct Buffer
+class BufferPool {
+    private static final ByteBuffer SHARED_BUFFER = 
+        ByteBuffer.allocateDirect(1024 * 1024); // 1MB共享缓冲区
+    
+    public static ByteBuffer getBuffer() {
+        SHARED_BUFFER.clear();
+        return SHARED_BUFFER;
+    }
+}
+```
+
+#### [#](https://www.xuanyuanli.cn/pages/88c2d0/#_3-2、mappedbytebuffer-内存映射文件)3.2、MappedByteBuffer（内存映射文件）
+
+内存映射是操作大文件的利器，它将文件直接映射到内存地址空间，像操作内存一样操作文件。
+
+```java
+// 内存映射文件示例
+try (RandomAccessFile file = new RandomAccessFile("large.dat", "rw");
+     FileChannel channel = file.getChannel()) {
+    
+    // 将文件映射到内存
+    MappedByteBuffer buffer = channel.map(
+        FileChannel.MapMode.READ_WRITE, // 映射模式
+        0,                              // 起始位置
+        file.length()                   // 映射大小
+    );
+    
+    // 像操作内存一样操作文件
+    buffer.putInt(100);
+    buffer.putLong(System.currentTimeMillis());
+    
+    // 强制写入磁盘
+    buffer.force();
+}
+```
+
+**适用场景：**
+
+- 频繁随机访问的大文件
+- 多个进程共享数据
+- 实现高效的文件复制
+
+**注意事项：**
+
+- 映射的文件在GC前无法删除
+- 大文件映射可能导致内存不足
+- Windows平台存在4GB文件大小限制
+
+## [#](https://www.xuanyuanli.cn/pages/88c2d0/#七、总结)七、总结
+
+学完这篇文章，你应该对Java IO有了全面的认识。让我们回顾一下关键要点：
+
+**1. 传统IO的核心概念**
+
+- 四大抽象基类：`InputStream`、`OutputStream`、`Reader`、`Writer`
+- 字节流处理二进制数据，字符流处理文本数据
+- 装饰器模式让IO类可以灵活组合
+
+**2. NIO带来的革新**
+
+- Channel和Buffer的配合使用
+- 零拷贝技术提升大文件传输性能
+- Direct Buffer减少内存拷贝开销
+
+**3. 实践建议**
+
+- 小文件、简单场景用传统IO足够
+- 大文件、高并发场景考虑NIO
+- 注意资源管理，善用try-with-resources
+- 处理文本时别忘了指定字符编码
+
+**4. 性能优化技巧**
+
+- 使用缓冲流减少IO调用次数
+- 大文件考虑内存映射（MappedByteBuffer）
+- 网络编程优先考虑NIO的非阻塞特性
+
+掌握IO不是一蹴而就的事情，需要在实践中不断积累经验。建议你从简单的文件操作开始，逐步深入到网络编程和高性能IO优化。记住，选择合适的工具比追求最新技术更重要。
+
+**祝你变得更强！**
+
+
+
