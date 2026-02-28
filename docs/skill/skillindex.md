@@ -111,7 +111,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
 
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  pyinstaller
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple uv
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple py
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pypdf
 
 pip install uv
 
@@ -149,6 +149,8 @@ pyinstaller --onefile --console  xxxx.py  // 带有日志输出
 原文链接：https://blog.csdn.net/qq_43377917/article/details/156646256
 
 
+
+## customtkinter
 
 
 
