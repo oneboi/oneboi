@@ -28,6 +28,10 @@ https://notes.zhengxinonly.com/archives.html
 
 [小高导航聚合网站](https://www.dhw22.com/)
 
+[PS变量功能](http://www.360doc.com/content/13/1225/21/1007023_340109198.shtml)
+
+
+
 ##  react和vue3语法对比网站
 
 [https://component-party.lainbo.com/?f=lit](https://gitee.com/link?target=https%3A%2F%2Fcomponent-party.lainbo.com%2F%3Ff%3Dlit)
