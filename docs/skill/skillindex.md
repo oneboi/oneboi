@@ -80,6 +80,48 @@ https://mp.weixin.qq.com/s/8qltBT9A-VaD5r9f2yb1OQ
 
 [https://www.md2wechat.cn/](https://www.md2wechat.cn/)
 
+
+
+
+
+[Gridea Pro](https://github.com/Gridea-Pro/gridea-pro)
+
+桌面静态博客写作客户端，不用设置服务器，零门槛建立自己的静态博客网站。（[@Hao4Wang](https://github.com/ruanyf/weekly/issues/9565) 投稿）
+
+1、[关于索引，你不知道的事](https://jon.chrt.dev/2026/04/15/things-you-didnt-know-about-indexes.html)（英文）
+
+一篇数据库科普文章，通过实例介绍索引（index）的基本用法。
+
+5、[你真的需要数据库吗？](https://www.dbpro.app/blog/do-you-even-need-a-database)（英文）
+
+本文提出，如果数据量不大，小型网站完全可以不用数据库，直接把数据保存在文件里面，无论是直接读文件、或者从内存查询，再或者二分法查询，速度都不慢。
+
+6、[Recordly](https://github.com/webadderall/Recordly)
+
+开源的录屏与编辑工具，适用于制作演示、产品展示、教程、讲解视频等，可以录制整个屏幕或单个窗口，并直接进入编辑器。（[@Hao4Wang](https://github.com/ruanyf/weekly/issues/9571) 投稿）
+
+7、[水印](https://wt.65536.dev/)
+
+为图像和视频添加水印的网站，支持自定义模板。（[@FurryR](https://github.com/ruanyf/weekly/issues/9579) 投稿）
+
+大模型意味着，Markdown 现在是一种可执行文件格式。你下载一个 Markdown 文件，你的大模型就多了一个新的第三方依赖项，它的任何修改都可能是注入攻击。
+
+-- [《第三方依赖的冷却时间》](https://calpaterson.com/deps.html)
+
+
+
+https://stevehanov.ca/blog/how-i-run-multiple-10k-mrr-companies-on-a-20month-tech-stack
+
+
+
+https://www.dbpro.app/blog/do-you-even-need-a-database
+
+https://jon.chrt.dev/2026/04/15/things-you-didnt-know-about-indexes.html
+
+
+
+
+
 # 什么是 BKHTMLTOPDF ?
 
 
