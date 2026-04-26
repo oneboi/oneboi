@@ -198,97 +198,76 @@ pyinstaller --onefile --console  xxxx.py  // 带有日志输出
 
 
 
-## 常见AI说明
+
+## Vscode 快捷键
+
+code 文件夹路径
+
+ctr+p 快速打开命令面板 输入文件名查找文件
+
+打开/关闭终端：ctrl + ` (1左边的按键)
+
+跳到指定行 ctr+g (相当于 ctr+p +:)
+
+命令面板： 区别在于不同的快捷键会加上不同的前缀
+
+按单词移动光标：ctrl + 左右方向键
+
+选中单词：ctrl + d （重复按可以多选）
+
+选中行：ctrl + l （重复按会同时选择下一行）（shift +箭头 逐行选中）
+
+
+移动行：alt + 上下
+
+
+~~***格式化代码：ctrl + shift + i***~~
+
+`跳转到定义：f12`
+查看当前文件符号：ctrl + shift + o
+剪切/复制当前行：ctrl + x / ctrl + c （什么都不选的时候）
+切换tab：alt+数字
+顺序切换tab：ctrl + pageup / pagedown
+关闭文件：ctrl+w
+关闭所有文件：ctrl + k w （ctrl不松手）
 
 
 
-### google
-
-Gemini
-
-Gemini是谷歌DeepMind团队基于2012年启动的人工智能研究计划开发的多模态大模型
-
-
-
-```java
-Gemini
-英/ˈdʒemɪnaɪ/
-美/ˈdʒemɪnaɪ/
-n.
-双子(星)座；双子宫；黄道第三宫；属双子座的人(约出生于5月22日至6月21日)
-
-```
+markdown 删除线
+vscode 删除行 
+1. ctrl+l +delete  
+2. ctrl+x 剪切
+3. shift+delete
+4. ctr+shift+k 搜狗软键盘
 
 
-
-Gemma是[谷歌](https://baike.baidu.com/item/谷歌/117920?fromModule=lemma_inlink)研发的开放AI大模型。谷歌公司宣布Gemma模型于2024年2月21日在全球范围内开放使用，并推出2b和7b两个版本。
-
-```
-gemma
-英/ˈdʒɛmə/
-美/ˈdʒɛmə/
-n.
-吉玛；芽，胞芽，芽胞；微胶粒，分子团
-```
-
-
-
-## twitter/X 
-
-grok
-
-Grok是由[埃隆·马斯克](https://baike.baidu.com/item/埃隆·马斯克/3776526?fromModule=lemma_inlink)旗下[xAI公司](https://baike.baidu.com/item/xAI公司/63199764?fromModule=lemma_inlink)开发的[人工智能大模型](https://baike.baidu.com/item/人工智能大模型/63800799?fromModule=lemma_inlink)系列，首发布于2023年11月，其命名源自科幻经典《异乡异客》，寓意深度理解。
-
-
-
-### 大模型词条
-
-https://baike.baidu.com/starmap/view?nodeId=783743685b98e22674f17d07&lemmaTitle=Grok&lemmaId=63677835&starMapFrom=lemma_starMap&fromModule=lemma_starMap
-
+高效的是 shift + Alt + ↓ 或 shift + Alt + ↑ 来复制并插入到下一行或上一行
 
 
 
 
-```
-"grok" 这个源自科幻小说的词汇，中文翻译需结合语境灵活处理。常见的译法包括：
 
-理解/领悟（强调深度认知）：
-"He groks quantum physics." → "他真正理解了量子物理。"
-适用于技术或抽象概念的掌握。
+https://cloud.tencent.com/developer/article/1181700
 
-吃透/精通（带熟练意味）：
-"It takes years to grok this software." → "要多年才能吃透这个软件。"
-多用于需要长期学习的技能。
 
-共鸣/共情（情感层面）：
-"She groks my feelings." → "她与我的感受产生了共鸣。"
-侧重情感上的理解。
 
-融入/同化（文化适应）：
-"He groks the local culture." → "他完全融入了当地文化。"
-描述文化吸收的场景。
 
-其他变体如「彻悟」「心领神会」可用于文学语境。这个词的特殊性在于它包含「通过体验而理解」的隐含意义，翻译时可通过添加副词（如「彻底」「真正」）来强化这层含义。
+## openclaw
 
-试一试：
-翻译详解
-关键术语解释
-以上为AI翻译结果
-简明释义牛津词典英英释义例句
-grok
-英/ɡrɒk/
-美/ɡrɑːk/
-vt.
-通过感觉意会
-Children grok this show immediately but their parents take longer to get it.
-孩子很快就通过感觉理解了这一演出，他们的父母却花了更长的时间才理解。
-If you really want to get your hands dirty with an Object Database, go to the Resource section and go through the Grok Tutorial.
-如果您真正希望动手使用对象数据库，请转到参考资料部分并仔细阅读Grok教程。
-But only YouTube created a new way for millions of people to entertain, educate, shock, rock and grok one another on a scale we've never seen before.
-不过，只有Youtube开创了一种让百万网民互相娱乐、说教、惊吓、摇滚以及神交的新方式。 [1]
-There was a lot to grok.
-有很多内容需要理解。 [5]
-I now grok that you are my people.
-我现在明白了,你们是我的子民。
-```
+
+https://www.bilibili.com/video/BV1jEAaz3E6K/?spm_id_from=333.1391.0.0&vd_source=a3b5a9a4c7255c0c25778b906332bc17
+
+
+## 字体和素材
+
+https://www.hellofont.cn/
+
+https://www.qiuziti.com/
+
+https://unsplash.com/
+
+https://www.pexels.com/zh-cn/
+
+keynote
+motion
 
