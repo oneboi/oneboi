@@ -172,7 +172,7 @@ pyinstaller --noconfirm --onedir --windowed --add-data "<CustomTkinter Location>
 | **CTkSwitch**          | 开关组件，用于切换开/关状态。                                | `master`, `text`, `variable`, `onvalue`, `offvalue`, `switch_width`, `switch_height` | `switch = ctk.CTkSwitch(master=frame, text="启用功能")`      |
 | **CTkScrollbar**       | 独立的滚动条，通常用于需要手动关联的组件（如`CTkTextbox`自带滚动条）。 | `master`, `orientation` ("vertical"/"horizontal")            | 通常由`CTkScrollableFrame`或`CTkTextbox`内部管理。           |
 
-### 5.1 按钮
+### 5.1 按钮 CTkButton
 
 
 
@@ -335,4 +335,299 @@ app.mainloop()
 ---
 
 
+
+```python
+"""
+CustomTkinter 组件完整示例
+演示了15种常用组件的创建、配置和事件处理方式
+需要先安装: pip install customtkinter
+"""
+
+import customtkinter as ctk
+from tkinter import messagebox
+
+
+# 设置外观模式和主题 (影响所有组件的外观)
+ctk.set_appearance_mode("system")          # 可选: "light", "dark", "system"
+ctk.set_default_color_theme("blue")         # 可选: "blue", "dark-blue", "green"
+
+
+class App(ctk.CTk):
+    """主应用程序类"""
+    
+    def __init__(self):
+        super().__init__()
+        
+        # 窗口基础配置
+        self.title("CustomTkinter 组件完整示例")
+        self.geometry("900x700")
+        
+        # ==================== 1. CTkFrame 框架 ====================
+        # 框架作为容器，用于组织和分组其他组件
+        self.main_frame = ctk.CTkFrame(self)
+        self.main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # ==================== 2. CTkScrollableFrame 可滚动框架 ====================
+        # 当内容超出可视区域时自动显示滚动条
+        self.scrollable_frame = ctk.CTkScrollableFrame(
+            self.main_frame,
+            label_text="所有组件展示区域",          # 框架标题
+            label_font=("微软雅黑", 16, "bold")     # 标题字体
+        )
+        self.scrollable_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # ==================== 3. CTkLabel 标签 ====================
+        # 用于显示文本或图片的基础组件
+        self.label = ctk.CTkLabel(
+            self.scrollable_frame,
+            text="这是一个标签 (CTkLabel)",
+            font=("微软雅黑", 18, "bold"),
+            text_color="#2CC985"                 # 文字颜色，支持十六进制
+        )
+        self.label.pack(pady=10)
+        
+        # ==================== 4. CTkButton 按钮 ====================
+        # 可设置圆角、边框和悬浮颜色
+        self.button = ctk.CTkButton(
+            self.scrollable_frame,
+            text="点击按钮 (CTkButton)",
+            command=self.button_callback,        # 绑定点击事件
+            width=200,
+            height=40,
+            corner_radius=10,                   # 圆角半径
+            fg_color="#2C7DA0",                 # 背景色
+            hover_color="#1F5068"               # 悬浮时的颜色
+        )
+        self.button.pack(pady=5)
+        
+        # ==================== 5. CTkEntry 输入框 ====================
+        # 支持占位符和密码模式
+        self.entry = ctk.CTkEntry(
+            self.scrollable_frame,
+            placeholder_text="请输入文本 (CTkEntry)",
+            width=300,
+            height=40,
+            corner_radius=8
+        )
+        self.entry.pack(pady=5)
+        
+        # ==================== 6. CTkCheckBox 复选框 ====================
+        # 多选场景使用，可通过 on/off 值获取状态
+        self.checkbox = ctk.CTkCheckBox(
+            self.scrollable_frame,
+            text="选项1 (CTkCheckBox)",
+            command=self.checkbox_callback,     # 状态改变时触发
+            onvalue="已选中",                    # 选中时的返回值
+            offvalue="未选中"                    # 未选中时的返回值
+        )
+        self.checkbox.pack(pady=5)
+        
+        # ==================== 7. CTkRadioButton 单选按钮 ====================
+        # 多个单选用同一个 variable 关联，实现互斥
+        self.radio_var = ctk.StringVar(value="选项A")  # 共享变量
+        
+        self.radio_a = ctk.CTkRadioButton(
+            self.scrollable_frame,
+            text="选项A (CTkRadioButton)",
+            variable=self.radio_var,             # 关联变量
+            value="选项A",                       # 选中时变量的值
+            command=self.radio_callback
+        )
+        self.radio_a.pack(pady=2)
+        
+        self.radio_b = ctk.CTkRadioButton(
+            self.scrollable_frame,
+            text="选项B (CTkRadioButton)",
+            variable=self.radio_var,
+            value="选项B",
+            command=self.radio_callback
+        )
+        self.radio_b.pack(pady=2)
+        
+        # ==================== 8. CTkSwitch 开关 ====================
+        # 类似于复选框，但样式为滑动开关
+        self.switch = ctk.CTkSwitch(
+            self.scrollable_frame,
+            text="启用功能 (CTkSwitch)",
+            command=self.switch_callback,
+            onvalue=True,
+            offvalue=False
+        )
+        self.switch.pack(pady=5)
+        
+        # ==================== 9. CTkSlider 滑块 ====================
+        # 用于选择连续范围内的数值
+        self.slider = ctk.CTkSlider(
+            self.scrollable_frame,
+            from_=0,                           # 最小值
+            to=100,                            # 最大值
+            number_of_steps=10,                # 可选：设置为整数步长
+            command=self.slider_callback,      # 滑动时实时触发
+            width=300
+        )
+        self.slider.pack(pady=10)
+        self.slider.set(50)                    # 设置初始值
+        
+        # 显示滑块数值的标签
+        self.slider_label = ctk.CTkLabel(self.scrollable_frame, text="滑块值: 50")
+        self.slider_label.pack()
+        
+        # ==================== 10. CTkProgressBar 进度条 ====================
+        # 用于显示任务完成百分比
+        self.progressbar = ctk.CTkProgressBar(
+            self.scrollable_frame,
+            width=300,
+            height=20,
+            corner_radius=10,
+            progress_color="#2CC985"           # 进度条颜色
+        )
+        self.progressbar.pack(pady=10)
+        self.progressbar.set(0)                # 初始值 0.0 ~ 1.0
+        
+        # ==================== 11. CTkComboBox 组合框 ====================
+        # 下拉选择，支持自定义选项列表
+        self.combobox = ctk.CTkComboBox(
+            self.scrollable_frame,
+            values=["选项1", "选项2", "选项3", "选项4"],  # 下拉列表内容
+            command=self.combobox_callback,             # 选择时的回调
+            width=200
+        )
+        self.combobox.pack(pady=10)
+        self.combobox.set("请选择")                      # 设置默认显示文本
+        
+        # ==================== 12. CTkOptionMenu 选项菜单 ====================
+        # 类似于 ComboBox，但样式不同，通常用于固定选项
+        self.optionmenu = ctk.CTkOptionMenu(
+            self.scrollable_frame,
+            values=["设置1", "设置2", "设置3"],
+            command=self.optionmenu_callback,
+            width=200
+        )
+        self.optionmenu.pack(pady=10)
+        self.optionmenu.set("设置1")                     # 默认选中项
+        
+        # ==================== 13. CTkSegmentedButton 分段按钮 ====================
+        # 多个按钮连成一组，互斥选择
+        self.segmented_var = ctk.StringVar(value="白天")
+        self.segmented_button = ctk.CTkSegmentedButton(
+            self.scrollable_frame,
+            values=["白天", "黑夜", "自动"],            # 各段的文本
+            variable=self.segmented_var,                # 绑定变量
+            command=self.segmented_callback
+        )
+        self.segmented_button.pack(pady=10)
+        
+        # ==================== 14. CTkTabview 标签页 ====================
+        # 多页面容器，每个Tab可以放置不同的内容
+        self.tabview = ctk.CTkTabview(
+            self.scrollable_frame,
+            width=600,
+            height=200
+        )
+        self.tabview.pack(pady=10)
+        
+        # 添加标签页
+        self.tabview.add("标签页1")
+        self.tabview.add("标签页2")
+        self.tabview.add("标签页3")
+        
+        # 在标签页1中添加内容
+        tab1_label = ctk.CTkLabel(self.tabview.tab("标签页1"), text="这是标签页1的内容")
+        tab1_label.pack(pady=20)
+        
+        tab1_button = ctk.CTkButton(self.tabview.tab("标签页1"), text="标签页1的按钮")
+        tab1_button.pack()
+        
+        # 在标签页2中添加内容
+        tab2_textbox = ctk.CTkTextbox(self.tabview.tab("标签页2"), width=500, height=100)
+        tab2_textbox.pack(pady=20)
+        tab2_textbox.insert("0.0", "这是标签页2的文本框，可以编辑多行文本。")
+        
+        # ==================== 15. CTkTextbox 文本框 ====================
+        # 多行文本输入/显示区域 (独立示例)
+        self.textbox = ctk.CTkTextbox(
+            self.scrollable_frame,
+            width=500,
+            height=100,
+            corner_radius=10,
+            border_width=1
+        )
+        self.textbox.pack(pady=10)
+        self.textbox.insert("0.0", "这是一个独立的文本框 (CTkTextbox)\n可以写多行文字...")
+        
+        # ==================== 16. CTkScrollbar 滚动条 ====================
+        # 通常与 Textbox 或 Frame 关联，这里附加到上面的 textbox
+        self.scrollbar = ctk.CTkScrollbar(
+            self.scrollable_frame,
+            orientation="vertical",              # 垂直滚动条
+            command=self.textbox.yview           # 控制 textbox 的垂直滚动
+        )
+        self.scrollbar.pack(side="right", fill="y")
+        self.textbox.configure(yscrollcommand=self.scrollbar.set)  # 双向绑定
+        
+        # ==================== 额外：状态显示区域 ====================
+        self.status_label = ctk.CTkLabel(
+            self.scrollable_frame,
+            text="状态：就绪",
+            font=("微软雅黑", 12),
+            text_color="gray"
+        )
+        self.status_label.pack(pady=10)
+    
+    # ==================== 回调函数 ====================
+    
+    def button_callback(self):
+        """按钮点击事件"""
+        input_text = self.entry.get()          # 获取输入框内容
+        self.status_label.configure(text=f"按钮已点击，输入框内容：{input_text}")
+        messagebox.showinfo("提示", f"按钮被点击了！\n输入内容：{input_text}")
+    
+    def checkbox_callback(self):
+        """复选框状态改变事件"""
+        status = self.checkbox.get()            # 获取复选框的 onvalue/offvalue
+        self.status_label.configure(text=f"复选框状态：{status}")
+    
+    def radio_callback(self):
+        """单选按钮选择事件"""
+        selected = self.radio_var.get()         # 获取当前选中的值
+        self.status_label.configure(text=f"单选按钮选中：{selected}")
+    
+    def switch_callback(self):
+        """开关状态改变事件"""
+        if self.switch.get():
+            self.status_label.configure(text="开关已开启")
+        else:
+            self.status_label.configure(text="开关已关闭")
+    
+    def slider_callback(self, value):
+        """滑块滑动事件"""
+        self.slider_label.configure(text=f"滑块值: {int(value)}")
+        # 同时更新进度条，展示联动效果
+        self.progressbar.set(value / 100.0)
+    
+    def combobox_callback(self, choice):
+        """组合框选择事件"""
+        self.status_label.configure(text=f"组合框选择了：{choice}")
+    
+    def optionmenu_callback(self, choice):
+        """选项菜单选择事件"""
+        self.status_label.configure(text=f"选项菜单选择了：{choice}")
+    
+    def segmented_callback(self, value):
+        """分段按钮点击事件"""
+        self.status_label.configure(text=f"分段按钮选中：{value}")
+        # 根据选择改变整体外观模式，演示动态切换主题
+        if value == "白天":
+            ctk.set_appearance_mode("light")
+        elif value == "黑夜":
+            ctk.set_appearance_mode("dark")
+        else:
+            ctk.set_appearance_mode("system")
+
+
+# 程序入口
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
+```
 
