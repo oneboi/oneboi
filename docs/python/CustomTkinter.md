@@ -239,3 +239,100 @@ button = customtkinter.CTkButton(app, text="CTkButton", command=button_event)
   Calls command if button state is 'disabled'.
   如果按钮状态为 'disabled'，则调用命令。
 
+---
+
+你看到的 `invoke()` 方法描述确实**容易让人产生困惑**。让我帮你澄清一下这个方法在 CTkButton 中的实际行为。
+
+📌 **`invoke()` 的真正含义**
+
+`invoke()` 方法的作用是**手动触发按钮的命令（command）**，就像用户点击了按钮一样。
+
+**正确的行为应该是：**
+
+- **正常状态（normal）**：调用 `invoke()` 会执行按钮绑定的 `command` 函数
+- **禁用状态（disabled）**：调用 `invoke()` **不会**执行命令
+
+❌ **文档中的描述可能是错误或过时的**
+
+你引用的文档说：
+
+> "如果按钮状态为 'disabled'，则调用命令。"
+
+这个描述**与实际情况相反**，也很可能是个文档错误。在标准的 tkinter 和 CustomTkinter 中，`invoke()` 通常在按钮禁用时**不起作用**。
+
+✅ **实际使用示例**
+
+python
+
+```
+import customtkinter as ctk
+
+def button_click():
+    print("按钮被点击了！")
+
+def test_invoke():
+    # 手动触发按钮的命令
+    my_button.invoke()  # 会打印 "按钮被点击了！"
+    
+    # 禁用按钮后再尝试
+    my_button.configure(state="disabled")
+    my_button.invoke()  # 不会打印任何内容（按钮被禁用）
+    
+    # 重新启用按钮
+    my_button.configure(state="normal")
+    my_button.invoke()  # 又会打印了
+
+app = ctk.CTk()
+my_button = ctk.CTkButton(app, text="点击我", command=button_click)
+my_button.pack(pady=20)
+
+test_button = ctk.CTkButton(app, text="测试 invoke", command=test_invoke)
+test_button.pack(pady=20)
+
+app.mainloop()
+```
+
+🎯 **`invoke()` 的典型使用场景**
+
+1. **程序化触发按钮**：当某些条件满足时，自动"点击"按钮
+2. **快捷键支持**：按下键盘快捷键时，自动触发对应的按钮
+3. **测试和调试**：在代码中模拟用户点击来测试功能
+4. **联动效果**：一个操作触发多个按钮的效果
+
+**实际应用示例：**
+
+python
+
+```
+import customtkinter as ctk
+
+def save_data():
+    print("保存数据...")
+
+def auto_save():
+    # 3秒后自动触发保存按钮
+    app.after(3000, save_button.invoke)
+
+app = ctk.CTk()
+
+save_button = ctk.CTkButton(app, text="保存", command=save_data)
+save_button.pack(pady=10)
+
+auto_save_button = ctk.CTkButton(app, text="启动自动保存", command=auto_save)
+auto_save_button.pack(pady=10)
+
+app.mainloop()
+```
+
+📝 **总结**
+
+- `invoke()` 的作用：手动触发按钮的命令
+- 文档描述可能有误：在 disabled 状态下应该**不会**调用命令
+- 实际用途：程序化触发、快捷键支持、自动化操作
+
+如果你发现 CTk 的某个版本确实有不同的行为，建议你实际测试一下来确认。你也可以查看 CustomTkinter 的 GitHub 仓库或最新文档来获取准确信息。
+
+---
+
+
+
