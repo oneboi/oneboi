@@ -10,7 +10,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: 'skill', link: '/skill/skillindex' },
-      { text: '案例', link: '/markdown-examples' },
+      { text: '自媒体', link: '/media/mediaindex' },
       { text: '书籍', link: '/booklist/bookindex' },
       { text: 'site', link: '/site/siteindex' },
       { text: '工具网站', link: '/tool/toolindex' },
@@ -21,7 +21,6 @@ export default defineConfig({
       { text: 'react', link: '/react/reactindex' },
       { text: 'springboot', link: '/springboot/springbootindex' },
       { text: 'design', link: '/design/designindex' },
-      { text: 'media', link: '/media/mediaindex' },
       { text: 'words', link: '/words/wordsindex' },
       { text: 'UI', link: '/ui/uiindex' },
 
