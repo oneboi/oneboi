@@ -13,17 +13,8 @@ export default defineConfig({
       { text: '自媒体', link: '/media/mediaindex' },
       { text: '书籍', link: '/booklist/bookindex' },
       { text: 'site', link: '/site/siteindex' },
-      { text: '工具网站', link: '/tool/toolindex' },
-      { text: '英语学习', link: '/english/englishindex' },
-      { text: 'java', link: '/java/javaindex' },
-      { text: 'python', link: '/python/pythonindex' },
-      { text: 'vue', link: '/vue/vueindex' },
-      { text: 'react', link: '/react/reactindex' },
-      { text: 'springboot', link: '/springboot/springbootindex' },
       { text: 'design', link: '/design/designindex' },
-      { text: 'words', link: '/words/wordsindex' },
-      { text: 'UI', link: '/ui/uiindex' },
-
+      { text: 'words', link: '/words/wordsindex' }
     ],
     sidebar: [
       {
@@ -32,11 +23,7 @@ export default defineConfig({
           { text: '文档', link: '/article/articleindex' },
           { text: '书籍收集', link: '/booklist/bookindex' },
           { text: '软件收集', link: '/store/soft/soft' },
-          { text: 'media', link: '/media/mediaindex' },
-          { text: 'words', link: '/words/wordsindex' },
-          { text: 'vue', link: '/vue/vueindex' },
-          { text: 'react', link: '/react/reactindex' }
-
+          { text: 'media', link: '/media/mediaindex' }
         ]
       },
       

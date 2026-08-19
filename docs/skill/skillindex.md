@@ -3,36 +3,24 @@
 # skill
 
 ## library
-library
-673575951/library123456
-
-v2rayN-windows-
-
-
-
-## [在线视频压缩](https://videocompressors.com/)
+* librar 673575951/library123456
+* v2rayN-window
+* oneboi768@gmail.com
+* oneboi768@qq.com
 
 
 
-## [卡片文本编辑](https://md2card.cn/zh/editor)
 
 
+[在线视频压缩](https://videocompressors.com/)|[卡片文本编辑](https://md2card.cn/zh/editor) |[在线拼图编辑器](https://online-collage-maker.com/zh/editor) |[https://www.lovart.ai/](https://www.lovart.ai/)
 
-## [在线拼图编辑器](https://online-collage-maker.com/zh/editor)
+[akkcloudjyh123456](https://a.akkooxas.com/)
 
 
 
 ## [https://agent.minimaxi.com/ AI](https://agent.minimaxi.com/)
 
 ## [轩辕李java教程](https://xuanyuanli.cn/pages/c6325d/#_5%E3%80%81lambdametafactory)
-
-
-
-## AI 图片设计
-
-[https://www.lovart.ai/](https://www.lovart.ai/)
-
-
 
 ## 国家中小学智慧平台-教材
 
@@ -73,15 +61,11 @@ https://mp.weixin.qq.com/s/8qltBT9A-VaD5r9f2yb1OQ
 ## 英语学习网站
 
 
-
 [https://2study.top/#/practice 一个很好的联系网站](https://2study.top/#/practice)
 
 ### 微信公众号排版工具
 
 [https://www.md2wechat.cn/](https://www.md2wechat.cn/)
-
-
-
 
 
 [Gridea Pro](https://github.com/Gridea-Pro/gridea-pro)
