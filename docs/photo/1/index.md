@@ -20,6 +20,8 @@ import img13 from './13.jpg'
 import img14 from './14.jpg'
 import img15 from './15.jpg'
 import img16 from './16.jpg'
+import img16 from './17.jpg'
+import img16 from './18.jpg'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const images = [
@@ -39,6 +41,8 @@ const images = [
   { src: img14, name: '14.jpg' },
   { src: img15, name: '15.jpg' },
   { src: img16, name: '16.jpg' },
+  { src: img16, name: '17.jpg' },
+  { src: img16, name: '18.jpg' },
 ]
 
 const cards = images.map((img, index) => ({
